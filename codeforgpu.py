@@ -12,3 +12,4 @@ init()
 
 def listeverything():
     print("hi")
+    print("hi")
