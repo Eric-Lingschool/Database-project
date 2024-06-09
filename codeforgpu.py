@@ -37,10 +37,16 @@ def login():
 
 
 def new_user():
-    
-
+    print("hi")
 
 
 
 
 login()
+
+
+
+
+
+
+
