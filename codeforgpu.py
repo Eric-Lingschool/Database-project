@@ -3,42 +3,61 @@ import sqlite3
 from colorama import Fore, Style, init
 
 #initialize variables
-
-#Define user name and password saparate by user and admin
-users = {
-"Eric":{'password':'123456'},
-}
+userpass = 0
 
 #Initialize colorma
 init()
 
+#Count lines in password file
+with open('username and password.txt', 'r') as file:
+    line_count = 0
+    for line in file:
+        line_count += 1
+
 #login code
 def login():
-    passtrials = 0  #how many tries they took to enter their password
-    while True:
-        print("Type 'exit' to exit the login interface")
-        user = input(Fore.WHITE + "Please enter your username: ")
-        if user == 'exit':
-            break
-        password = input("Please enter your password: ")
-        if passtrials != 0:
-            print(Fore.RED + f"You have {3 - passtrials} trys left.")
-        if user and user in users and password == users[user]['password']:
-            print('Login successful!')
-            return 0
-        if user == 'exit':
-            break
-        if passtrials == 3:
-            print("You have inputted the wrong username or password too many times.")
-            break
-        else:
-            print(Fore.RED + "Incorrect username or password. Please try again. To exit, enter 'exit' as the username.")
-            passtrials += 1
+    loginstate = False
+    breakingpt = False
+    with open('username and password.txt', 'r') as file:
+        userpass = file.read()
+        passtrials = 0  #how many tries they took to enter their password
+        while True:
+            print(Fore.WHITE + "Type 'exit' to exit the login interface")
+            username = input(Fore.WHITE + "Please enter your username: ")
+            if username == 'exit':
+                break
+            password = input("Please enter your password: ")
+            sections = userpass.split(", ")
+            for i in range(line_count):
+                if sections[i * 4 + 1] == username and sections[i * 4 + 2] == password:
+                    print(Fore.WHITE + 'Login successful!')
+                    breakingpt = True
+            if breakingpt == True:
+                loginstate = True
+                break
+            if username == 'exit':
+                break
+            if passtrials == 3:
+                print(Fore.RED + "You have inputted the wrong username or password too many times.")
+                break
+            if loginstate == False:
+                print(Fore.RED + "Incorrect username or password. Please try again. To exit, enter 'exit' as the username.")
+                passtrials += 1
+            if passtrials != 0 and loginstate == False:
+                print(Fore.RED + f"You have {3 - passtrials} trys left.")
 
 
 def new_user():
-    print("hi")
-
+    user_id = line_count
+    admin = False
+    adminpass = "adminpower"
+    new_username = input("Please enter your desired username:")
+    if new_username == adminpass:
+        new_username = input(Fore.GREEN + "You are now an admin of the database, please choose a new username!")
+        admin = True
+    new_password = input(Fore.LIGHTBLUE_EX + "Please enter your desired password:")
+    with open('username and password.txt', 'w') as file:
+        userpass = file.write(f"{user_id}, {new_username}, {new_password}, {admin}, ")
 
 
 
