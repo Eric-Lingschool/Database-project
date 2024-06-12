@@ -47,7 +47,7 @@ def login():
                 print(Fore.RED + f"You have {3 - passtrials} trys left.")
 
 
-def new_user():
+def new_user(): #creating new user code
     user_id = line_count
     admin = False
     adminpass = "adminpower"
@@ -58,6 +58,18 @@ def new_user():
     new_password = input(Fore.LIGHTBLUE_EX + "Please enter your desired password:")
     with open('username and password.txt', 'w') as file:
         userpass = file.write(f"{user_id}, {new_username}, {new_password}, {admin}, ")
+
+
+
+def getall():
+    '''print all data in gpu table'''
+    db = sqlite3.connect()
+    cursor = db.cursor()
+   
+    #Lakers_Player
+    sql= "SELECT * FROM Lakers_Player_2023_24;"
+    cursor.execute(sql)
+    results = cursor.fetchall()
 
 
 
