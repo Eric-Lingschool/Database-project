@@ -79,7 +79,7 @@ def getallfromdatabase(): #GET EVERYTHING FROM THE DATABASE!
     connectdatabase("SELECT * FROM GPU;", Fore.GREEN + "Name                Manufacturer  Clock speed id  Memory id", 20, 14, 16, 14)
     connectdatabase("SELECT * FROM Memory;", Fore.GREEN + "Memory size  Memory bus", 13, 10, 0, 0)
     connectdatabase("SELECT * FROM clock_speed;", Fore.GREEN + "Base clock  Memory clock", 13, 10, 0, 0)
-    print("It's a bit messy but YOU asked for everything at once.")
+    print(Fore.RED + "It's a bit messy but YOU asked for everything at once.")
 
 
 
