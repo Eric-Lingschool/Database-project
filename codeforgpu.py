@@ -118,10 +118,10 @@ if loginstate == True:
         connectdatabase("SELECT * FROM GPU;", Fore.GREEN + "Name                Manufacturer  Clock speed id  Memory id", 20, 14, 16, 14)
         askingquestions()
     elif access == "3":
-        print(f"{Fore.WHITE}If you want it to be in ascending order for memory size, type {Fore.GREEN}1.")
-        print(f"{Fore.WHITE}If you want it to be in ascending order for memory bus, type {Fore.GREEN}2.")
-        print(f"{Fore.WHITE}If you want it to be in descending order for memory size, type {Fore.GREEN}3.")
-        print(f"{Fore.WHITE}If you want it to be in descending order for memory bus, type {Fore.GREEN}4.")
+        print(f"{Fore.WHITE}If you want it to be in ascending order for Memory size, type {Fore.GREEN}1.")
+        print(f"{Fore.WHITE}If you want it to be in ascending order for Memory bus, type {Fore.GREEN}2.")
+        print(f"{Fore.WHITE}If you want it to be in descending order for Memory size, type {Fore.GREEN}3.")
+        print(f"{Fore.WHITE}If you want it to be in descending order for Memory bus, type {Fore.GREEN}4.")
         print(f"{Fore.WHITE}If you want it to be natural like some brand of yogurt(origional order), type {Fore.GREEN}5.")
         memory = input(Fore.WHITE)
         if memory == "1":
@@ -140,10 +140,27 @@ if loginstate == True:
             connectdatabase("SELECT * FROM Memory", Fore.GREEN + "Memory Size(GB)     Memory Bus(bit)", 20, 14, 16, 14)
             askingquestions()
     elif access == "4":
-        print(f"{Fore.WHITE}If you want it to be in asceding order, type {Fore.GREEN}1.")
-        print(f"{Fore.WHITE}If you want it to be in descending order, type {Fore.GREEN}2.")
-        print(f"{Fore.WHITE}If you want it to be natural like some brand of yogurt(origional order), type {Fore.GREEN}3.")
+        print(f"{Fore.WHITE}If you want it to be in ascending order for Base clock, type {Fore.GREEN}1.")
+        print(f"{Fore.WHITE}If you want it to be in ascending order for Memory clock, type {Fore.GREEN}2.")
+        print(f"{Fore.WHITE}If you want it to be in descending order for Base clock, type {Fore.GREEN}3.")
+        print(f"{Fore.WHITE}If you want it to be in descending order for Memory clock, type {Fore.GREEN}4.")
+        print(f"{Fore.WHITE}If you want it to be natural like some brand of yogurt(origional order), type {Fore.GREEN}5.")
         clockspeed = input(Fore.WHITE)
+        if clockspeed == "1":
+            connectdatabase("SELECT * FROM clock_speed ORDER BY base_clock ASC;", Fore.GREEN + "Base clock(MHz)     Memory clock(MHz)", 20, 14, 16, 14)
+            askingquestions()
+        elif clockspeed == "2":
+            connectdatabase("SELECT * FROM clock_speed ORDER BY memory_clock ASC;", Fore.GREEN + "Memory clock(MHz)   Base clock(MHz)", 20, 14, 16, 14)
+            askingquestions()
+        elif clockspeed == "3":
+            connectdatabase("SELECT * FROM clock_speed ORDER BY base_clock DESC;", Fore.GREEN + "Base clock(MHz)     Memory clock(HMz)", 20, 14, 16, 14)
+            askingquestions()
+        elif clockspeed == "4":
+            connectdatabase("SELECT * FROM clock_speed ORDER BY memory_clock DESC;", Fore.GREEN + "Memory Bus(HMz)   Base clock(HMz)", 20, 14, 16, 14)
+            askingquestions()
+        elif clockspeed == "5":
+            connectdatabase("SELECT * FROM clock_speed", Fore.GREEN + "Memory clock(HMz)    Memory size(HMz)", 20, 14, 16, 14)
+            askingquestions()
 '''        elif access == "5":
 
         elif access == "6":
@@ -162,7 +179,4 @@ if loginstate == True:
 '''
 
 
-
-
-
-
+#limit on value on each thing
