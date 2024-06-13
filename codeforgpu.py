@@ -9,10 +9,7 @@ userpass = 0
 init()
 
 #Count lines in password file
-with open('username and password.txt', 'r') as file:
-    line_count = 0
-    for line in file:
-        line_count += 1
+
 
 #code to connect to database
 def connectdatabase(sql, heading, spc1, spc2, spc3, spc4): #sql is what command in the sql interface you want to use             The spc# varables are to determine the spacing between the data
@@ -62,16 +59,21 @@ def login():
 
 
 def new_user(): #creating new user code
-    user_id = line_count
-    admin = False
-    adminpass = "adminpower"
-    new_username = input("Please enter your desired username: \n")
-    if new_username == adminpass:
-        new_username = input(Fore.GREEN + "You are now an admin of the database, please choose a new username! \n")
-        admin = True
-    new_password = input(Fore.LIGHTBLUE_EX + "Please enter your desired password: \n")
-    with open('username and password.txt', 'w') as file:
-        userpass = file.write(f"{user_id}, {new_username}, {new_password}, {admin}, ")
+    with open('username and password.txt', 'r') as file:
+        line_count = 0
+        for line in file:
+            line_count += 1
+        user_id = line_count
+        admin = False
+        adminpass = "adminpower"
+        new_username = input("Please enter your desired username: \n")
+        if new_username == adminpass:
+            new_username = input(Fore.GREEN + "You are now an admin of the database, please choose a new username! \n")
+            admin = True
+        new_password = input(Fore.LIGHTBLUE_EX + "Please enter your desired password: \n")
+        with open('username and password.txt', 'w') as file:
+            userpass = file.write(f"{user_id}, {new_username}, {new_password}, {admin}, ")
+        db.close()
 
 
 
