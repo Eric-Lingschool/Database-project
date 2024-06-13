@@ -9,53 +9,22 @@ userpass = 0
 init()
 
 #Count lines in password file
-
+with open('username and password.txt', 'r') as file:
+    line_count = 0
+    for line in file:
+        line_count += 1
 
 #code to connect to database
-def connectdatabase(sql, heading, spc1, spc2, spc3, spc4): #sql is what command in the sql interface you want to use             The spc# varables are to determine the spacing between the data
+def connectdatabase(sql1, heading, spc1, spc2, spc3, spc4): #sql is what command in the sql interface you want to use             The spc# varables are to determine the spacing between the data
     db = sqlite3.connect("GPU.db") #connect to database
     cursor = db.cursor()
-    cursor.execute(sql)
+    cursor.execute(sql1)
     results = cursor.fetchall()
     print(heading)
     for gpus in results:
         print(Fore.WHITE + f"{gpus[1]:<{spc1}}{gpus[2]:<{spc2}}{gpus[3]:<{spc3}}{gpus[4]:<{spc4}}")
     print("")
-    db.close()
     
-
-
-#login code
-def login():
-    loginstate = False
-    breakingpt = False
-    with open('username and password.txt', 'r') as file:
-        userpass = file.read()
-        passtrials = 0  #how many tries they took to enter their password
-        while True:
-            print(Fore.WHITE + "Type 'exit' to exit the login interface")
-            username = input(Fore.WHITE + "Please enter your username: \n")
-            if username == 'exit':
-                break
-            password = input("Please enter your password: \n")
-            sections = userpass.split(", ")
-            for i in range(line_count):
-                if sections[i * 4 + 1] == username and sections[i * 4 + 2] == password:
-                    print(Fore.WHITE + 'Login successful!')
-                    breakingpt = True
-            if breakingpt == True:
-                loginstate = True
-                break
-            if username == 'exit':
-                break
-            if passtrials == 3:
-                print(Fore.RED + "You have inputted the wrong username or password too many times.")
-                break
-            if loginstate == False:
-                print(Fore.RED + "Incorrect username or password. Please try again. To exit, enter 'exit' as the username.")
-                passtrials += 1
-            if passtrials != 0 and loginstate == False:
-                print(Fore.RED + f"You have {3 - passtrials} trys left.")
 
 
 def new_user(): #creating new user code
@@ -63,7 +32,7 @@ def new_user(): #creating new user code
         line_count = 0
         for line in file:
             line_count += 1
-        user_id = line_count
+        user_id = line_count + 1
         admin = False
         adminpass = "adminpower"
         new_username = input("Please enter your desired username: \n")
@@ -71,30 +40,126 @@ def new_user(): #creating new user code
             new_username = input(Fore.GREEN + "You are now an admin of the database, please choose a new username! \n")
             admin = True
         new_password = input(Fore.LIGHTBLUE_EX + "Please enter your desired password: \n")
-        with open('username and password.txt', 'w') as file:
-            userpass = file.write(f"{user_id}, {new_username}, {new_password}, {admin}, ")
-        db.close()
+        with open('username and password.txt', 'a') as file:
+            userpass = file.write(f"\n{user_id}, {new_username}, {new_password}, {admin}, ")
+        file.close()
 
 
 
-def getallfromdatabase(): #GET EVERYTHING FROM THE DATABASE!
-    connectdatabase("SELECT * FROM GPU;", Fore.GREEN + "Name                Manufacturer  Clock speed id  Memory id", 20, 14, 16, 14)
-    connectdatabase("SELECT * FROM Memory;", Fore.GREEN + "Memory size  Memory bus", 13, 10, 0, 0)
-    connectdatabase("SELECT * FROM clock_speed;", Fore.GREEN + "Base clock  Memory clock", 13, 10, 0, 0)
-    print(Fore.RED + "It's a bit messy but YOU asked for everything at once.")
+#login code
+def login():
+    global loginstate
+    loginstate = False
+    breakingpt = False
+    with open('username and password.txt', 'r') as file:
+        userpass = file.read()
+        passtrials = 0  #how many tries they took to enter their password
+    while loginstate == False:
+        print(Fore.WHITE + "Type 'exit' to exit the login interface")
+        if passtrials == 0:
+            print(Fore.GREEN + "If you don't have an existing account and want to create a new one, type 'c'.")
+        username = input(Fore.WHITE + "Please enter your username: \n")
+        if username.lower() == "c":
+            new_user()
+        if username == 'exit':
+            break
+        password = input("Please enter your password: \n")
+        sections = userpass.split(", ")
+        for trys in range(line_count):
+            if sections[trys * 4 + 1] == username and sections[trys * 4 + 2] == password:
+                print(Fore.GREEN + 'Login successful!')
+                breakingpt = True
+        if breakingpt == True:
+            loginstate = True
+            break
+        if username == 'exit':
+            break
+        if passtrials == 3:
+            print(Fore.RED + "You have inputted the wrong username or password too many times.")
+            break
+        if loginstate == False:
+            print(Fore.RED + "Incorrect username or password. Please try again. To exit, enter 'exit' as the username.")
+            passtrials += 1
+        if passtrials != 0 and loginstate == False:
+            print(Fore.RED + f"You have {3 - passtrials} trys left.")
+    file.close()
 
 
 
 
 
 
-getallfromdatabase()
+def askingquestions():
+    print("Welcome to 'totally not inaccurate or unessesary database'. Choose what you want to do before you go on with your day.\n")
+    print(f"{Fore.WHITE}Type {Fore.GREEN}1{Fore.WHITE} to access EVERYTHING at the same time.")
+    print(f"{Fore.WHITE}Type {Fore.GREEN}2{Fore.WHITE} to access the 'gpu' table.")
+    print(f"{Fore.WHITE}Type {Fore.GREEN}3{Fore.WHITE} to access the 'Memory' table.")
+    print(f"{Fore.WHITE}Type {Fore.GREEN}4{Fore.WHITE} to access the 'clock speed' table.")
+    print(f"{Fore.WHITE}Type {Fore.GREEN}5{Fore.WHITE} to access EVERYTHING at the same time.")
+    print(f"{Fore.WHITE}Type {Fore.GREEN}6{Fore.WHITE} to access EVERYTHING at the same time.")
+    print(f"{Fore.WHITE}Type {Fore.GREEN}7{Fore.WHITE} to access EVERYTHING at the same time.")
+    print(f"{Fore.WHITE}Type {Fore.GREEN}8{Fore.WHITE} to exit the program.\n")
+
+
+
+#Main code
+#login()
+loginstate = True
+if loginstate == True:
+    askingquestions()
+    access = input()
+    if access == "1":
+        connectdatabase("SELECT * FROM GPU;", Fore.GREEN + "Name                Manufacturer  Clock speed id  Memory id", 20, 14, 16, 14)
+        connectdatabase("SELECT * FROM Memory;", Fore.GREEN + "Memory size  Memory bus", 13, 10, 0, 0)
+        connectdatabase("SELECT * FROM clock_speed;", Fore.GREEN + "Base clock  Memory clock", 13, 10, 0, 0)
+        print(Fore.RED + "It's a bit messy but YOU asked for everything at once.")
+        askingquestions()
+    elif access == "2":
+        connectdatabase("SELECT * FROM GPU;", Fore.GREEN + "Name                Manufacturer  Clock speed id  Memory id", 20, 14, 16, 14)
+        askingquestions()
+    elif access == "3":
+        print(f"{Fore.WHITE}If you want it to be in ascending order for memory size, type {Fore.GREEN}1.")
+        print(f"{Fore.WHITE}If you want it to be in ascending order for memory bus, type {Fore.GREEN}2.")
+        print(f"{Fore.WHITE}If you want it to be in descending order for memory size, type {Fore.GREEN}3.")
+        print(f"{Fore.WHITE}If you want it to be in descending order for memory bus, type {Fore.GREEN}4.")
+        print(f"{Fore.WHITE}If you want it to be natural like some brand of yogurt(origional order), type {Fore.GREEN}5.")
+        memory = input(Fore.WHITE)
+        if memory == "1":
+            connectdatabase("SELECT * FROM Memory ORDER BY memory_size ASC;", Fore.GREEN + "Memory Size(GB)     Memory Bus(bit)", 20, 14, 16, 14)
+            askingquestions()
+        elif memory == "2":
+            connectdatabase("SELECT * FROM Memory ORDER BY memory_bus ASC;", Fore.GREEN + "Memory Bus(bit)     Memory Size(GB)", 20, 14, 16, 14)
+            askingquestions()
+        elif memory == "3":
+            connectdatabase("SELECT * FROM Memory ORDER BY memory_size DESC;", Fore.GREEN + "Memory Size(GB)     Memory Bus(bit)", 20, 14, 16, 14)
+            askingquestions()
+        elif memory == "4":
+            connectdatabase("SELECT * FROM Memory ORDER BY memory_bus DESC;", Fore.GREEN + "Memory Bus(bit)     Memory Size(GB)", 20, 14, 16, 14)
+            askingquestions()
+        elif memory == "5":
+            connectdatabase("SELECT * FROM Memory", Fore.GREEN + "Memory Size(GB)     Memory Bus(bit)", 20, 14, 16, 14)
+            askingquestions()
+    elif access == "4":
+        print(f"{Fore.WHITE}If you want it to be in asceding order, type {Fore.GREEN}1.")
+        print(f"{Fore.WHITE}If you want it to be in descending order, type {Fore.GREEN}2.")
+        print(f"{Fore.WHITE}If you want it to be natural like some brand of yogurt(origional order), type {Fore.GREEN}3.")
+        clockspeed = input(Fore.WHITE)
+'''        elif access == "5":
+
+        elif access == "6":
+
+        elif access == "7":
+
+        elif access == "8":
+
+        else:
+            print(Fore.RED + "That is not an option!")
 
 
 
 
 
-
+'''
 
 
 
