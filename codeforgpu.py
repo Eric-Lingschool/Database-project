@@ -90,7 +90,7 @@ def login():
 
 
 def askingquestions():
-    print("Welcome to 'totally not inaccurate or unessesary database'. Choose what you want to do before you go on with your day.\n")
+    print(Fore.WHITE + "Welcome to 'totally not inaccurate or unessesary database'. Choose what you want to do before you go on with your day.\n")
     print(f"{Fore.WHITE}Type {Fore.GREEN}1{Fore.WHITE} to access EVERYTHING at the same time.")
     print(f"{Fore.WHITE}Type {Fore.GREEN}2{Fore.WHITE} to access the 'gpu' table.")
     print(f"{Fore.WHITE}Type {Fore.GREEN}3{Fore.WHITE} to access the 'Memory' table.")
@@ -99,24 +99,23 @@ def askingquestions():
     print(f"{Fore.WHITE}Type {Fore.GREEN}6{Fore.WHITE} to access EVERYTHING at the same time.")
     print(f"{Fore.WHITE}Type {Fore.GREEN}7{Fore.WHITE} to access EVERYTHING at the same time.")
     print(f"{Fore.WHITE}Type {Fore.GREEN}8{Fore.WHITE} to exit the program.\n")
+    global access
+    access = input()
 
 
 
 #Main code
-login()
+#login()
 loginstate = True
-if loginstate == True:
+while loginstate == True:
     askingquestions()
-    access = input()
     if access == "1":
         connectdatabase("SELECT * FROM GPU;", Fore.GREEN + "Name                Manufacturer  Clock speed id  Memory id", 20, 14, 16, 14)
         connectdatabase("SELECT * FROM Memory;", Fore.GREEN + "Memory size  Memory bus", 13, 10, 0, 0)
         connectdatabase("SELECT * FROM clock_speed;", Fore.GREEN + "Base clock  Memory clock", 13, 10, 0, 0)
         print(Fore.RED + "It's a bit messy but YOU asked for everything at once.")
-        askingquestions()
     elif access == "2":
         connectdatabase("SELECT * FROM GPU;", Fore.GREEN + "Name                Manufacturer  Clock speed id  Memory id", 20, 14, 16, 14)
-        askingquestions()
     elif access == "3":
         print(f"{Fore.WHITE}If you want it to be in ascending order for Memory size, type {Fore.GREEN}1.")
         print(f"{Fore.WHITE}If you want it to be in ascending order for Memory bus, type {Fore.GREEN}2.")
@@ -126,19 +125,14 @@ if loginstate == True:
         memory = input(Fore.WHITE)
         if memory == "1":
             connectdatabase("SELECT * FROM Memory ORDER BY memory_size ASC;", Fore.GREEN + "Memory Size(GB)     Memory Bus(bit)", 20, 14, 16, 14)
-            askingquestions()
         elif memory == "2":
             connectdatabase("SELECT * FROM Memory ORDER BY memory_bus ASC;", Fore.GREEN + "Memory Bus(bit)     Memory Size(GB)", 20, 14, 16, 14)
-            askingquestions()
         elif memory == "3":
             connectdatabase("SELECT * FROM Memory ORDER BY memory_size DESC;", Fore.GREEN + "Memory Size(GB)     Memory Bus(bit)", 20, 14, 16, 14)
-            askingquestions()
         elif memory == "4":
             connectdatabase("SELECT * FROM Memory ORDER BY memory_bus DESC;", Fore.GREEN + "Memory Bus(bit)     Memory Size(GB)", 20, 14, 16, 14)
-            askingquestions()
         elif memory == "5":
             connectdatabase("SELECT * FROM Memory", Fore.GREEN + "Memory Size(GB)     Memory Bus(bit)", 20, 14, 16, 14)
-            askingquestions()
     elif access == "4":
         print(f"{Fore.WHITE}If you want it to be in ascending order for Base clock, type {Fore.GREEN}1.")
         print(f"{Fore.WHITE}If you want it to be in ascending order for Memory clock, type {Fore.GREEN}2.")
@@ -148,19 +142,14 @@ if loginstate == True:
         clockspeed = input(Fore.WHITE)
         if clockspeed == "1":
             connectdatabase("SELECT * FROM clock_speed ORDER BY base_clock ASC;", Fore.GREEN + "Base clock(MHz)     Memory clock(MHz)", 20, 14, 16, 14)
-            askingquestions()
         elif clockspeed == "2":
             connectdatabase("SELECT * FROM clock_speed ORDER BY memory_clock ASC;", Fore.GREEN + "Memory clock(MHz)   Base clock(MHz)", 20, 14, 16, 14)
-            askingquestions()
         elif clockspeed == "3":
             connectdatabase("SELECT * FROM clock_speed ORDER BY base_clock DESC;", Fore.GREEN + "Base clock(MHz)     Memory clock(HMz)", 20, 14, 16, 14)
-            askingquestions()
         elif clockspeed == "4":
             connectdatabase("SELECT * FROM clock_speed ORDER BY memory_clock DESC;", Fore.GREEN + "Memory Bus(HMz)   Base clock(HMz)", 20, 14, 16, 14)
-            askingquestions()
         elif clockspeed == "5":
             connectdatabase("SELECT * FROM clock_speed", Fore.GREEN + "Memory clock(HMz)    Memory size(HMz)", 20, 14, 16, 14)
-            askingquestions()
 '''        elif access == "5":
 
         elif access == "6":
