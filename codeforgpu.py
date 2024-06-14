@@ -171,6 +171,8 @@ while loginstate == True:
     elif access == "5":
         print(Fore.GREEN + "Have fun doing something else in your day!")
         break
+    elif access == "$$$":
+        print("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
     else:
         print(Fore.RED + "That is not an option!")
 
