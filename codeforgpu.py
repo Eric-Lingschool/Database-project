@@ -3,7 +3,7 @@ import sqlite3
 from colorama import Fore, Style, init
 
 #initialize variables
-userpass = 0
+
 
 #Initialize colorma
 init()
@@ -13,9 +13,10 @@ with open('username and password.txt', 'r') as file:
     line_count = 0
     for line in file:
         line_count += 1
+file.close()
 
 #code to connect to database
-def connectdatabase(sql1, heading, spc1, spc2, spc3, spc4): #sql is what command in the sql interface you want to use             The spc# varables are to determine the spacing between the data
+def connectdatabase(sql1, heading, spc1, spc2, spc3, spc4): #sql is what command in the sql interface you want to use     The spc# varables are to determine the spacing between the data
     db = sqlite3.connect("GPU.db") #connect to database
     cursor = db.cursor()
     cursor.execute(sql1)
@@ -29,20 +30,34 @@ def connectdatabase(sql1, heading, spc1, spc2, spc3, spc4): #sql is what command
 
 def new_user(): #creating new user code
     with open('username and password.txt', 'r') as file:
-        line_count = 0
-        for line in file:
-            line_count += 1
+        userpass = file.read()
+        recuruser = 0
+        repeat = False
+        sectiondvd = 0
+        print(line_count)
         user_id = line_count + 1
         admin = False
         adminpass = "adminpower"
-        new_username = input("Please enter your desired username: \n")
+        new_username = input(Fore.LIGHTBLUE_EX + "Please enter your desired username: \n")
+        while new_username.lower() == "c":
+            print(Fore.RED + "This username already exists, please choose another one.")
+            new_username = input(Fore.LIGHTBLUE_EX + "Please enter your desired username: \n")
+        sections = userpass.split(", ")
+        while repeat == True or sectiondvd == 0:
+            for i in range(line_count):
+                recuruser = sections[i * 4 + 1]
+                while new_username == recuruser:
+                    print(Fore.RED + "This username already exists, please choose another one.")
+                    new_username = input(Fore.LIGHTBLUE_EX + "Please enter your desired username: \n")
+                    repeat = True
         if new_username == adminpass:
             new_username = input(Fore.GREEN + "You are now an admin of the database, please choose a new username! \n")
             admin = True
         new_password = input(Fore.LIGHTBLUE_EX + "Please enter your desired password: \n")
         with open('username and password.txt', 'a') as file:
             userpass = file.write(f"\n{user_id}, {new_username}, {new_password}, {admin}, ")
-        file.close()
+            file.close()
+
 
 
 
@@ -61,9 +76,10 @@ def login():
         username = input(Fore.WHITE + "Please enter your username: \n")
         if username.lower() == "c":
             new_user()
+            print(Fore.RED + "Please start the program again, your username and password is being saved. (If you dont, it might not register your new account.)")
         if username == 'exit':
             break
-        password = input("Please enter your password: \n")
+        password = input(Fore.WHITE + "Please enter your password: \n")
         sections = userpass.split(", ")
         for trys in range(line_count):
             if sections[trys * 4 + 1] == username and sections[trys * 4 + 2] == password:
@@ -95,17 +111,14 @@ def askingquestions():
     print(f"{Fore.WHITE}Type {Fore.GREEN}2{Fore.WHITE} to access the 'gpu' table.")
     print(f"{Fore.WHITE}Type {Fore.GREEN}3{Fore.WHITE} to access the 'Memory' table.")
     print(f"{Fore.WHITE}Type {Fore.GREEN}4{Fore.WHITE} to access the 'clock speed' table.")
-    print(f"{Fore.WHITE}Type {Fore.GREEN}5{Fore.WHITE} to access EVERYTHING at the same time.")
-    print(f"{Fore.WHITE}Type {Fore.GREEN}6{Fore.WHITE} to access EVERYTHING at the same time.")
-    print(f"{Fore.WHITE}Type {Fore.GREEN}7{Fore.WHITE} to access EVERYTHING at the same time.")
-    print(f"{Fore.WHITE}Type {Fore.GREEN}8{Fore.WHITE} to exit the program.\n")
+    print(f"{Fore.WHITE}Type {Fore.GREEN}5{Fore.WHITE} to exit the program.\n")
     global access
     access = input()
 
 
 
 #Main code
-#login()
+login()
 loginstate = True
 while loginstate == True:
     askingquestions()
@@ -133,6 +146,8 @@ while loginstate == True:
             connectdatabase("SELECT * FROM Memory ORDER BY memory_bus DESC;", Fore.GREEN + "Memory Bus(bit)     Memory Size(GB)", 20, 14, 16, 14)
         elif memory == "5":
             connectdatabase("SELECT * FROM Memory", Fore.GREEN + "Memory Size(GB)     Memory Bus(bit)", 20, 14, 16, 14)
+        else:
+            print(Fore.RED + "That is not an option!")
     elif access == "4":
         print(f"{Fore.WHITE}If you want it to be in ascending order for Base clock, type {Fore.GREEN}1.")
         print(f"{Fore.WHITE}If you want it to be in ascending order for Memory clock, type {Fore.GREEN}2.")
@@ -150,22 +165,14 @@ while loginstate == True:
             connectdatabase("SELECT * FROM clock_speed ORDER BY memory_clock DESC;", Fore.GREEN + "Memory Bus(HMz)   Base clock(HMz)", 20, 14, 16, 14)
         elif clockspeed == "5":
             connectdatabase("SELECT * FROM clock_speed", Fore.GREEN + "Memory clock(HMz)    Memory size(HMz)", 20, 14, 16, 14)
-'''        elif access == "5":
-
-        elif access == "6":
-
-        elif access == "7":
-
-        elif access == "8":
-
         else:
             print(Fore.RED + "That is not an option!")
+    elif access == "5":
+        print(Fore.GREEN + "Have fun doing something else in your day!")
+        break
+    else:
+        print(Fore.RED + "That is not an option!")
 
-
-
-
-
-'''
 
 
 #limit on value on each thing
