@@ -34,7 +34,6 @@ def new_user(): #creating new user code
         recuruser = 0
         repeat = False
         sectiondvd = 0
-        print(line_count)
         user_id = line_count + 1
         admin = False
         adminpass = "adminpower"
@@ -44,12 +43,14 @@ def new_user(): #creating new user code
             new_username = input(Fore.LIGHTBLUE_EX + "Please enter your desired username: \n")
         sections = userpass.split(", ")
         while repeat == True or sectiondvd == 0:
+            sectiondvd = 1
             for i in range(line_count):
                 recuruser = sections[i * 4 + 1]
                 while new_username == recuruser:
                     print(Fore.RED + "This username already exists, please choose another one.")
                     new_username = input(Fore.LIGHTBLUE_EX + "Please enter your desired username: \n")
                     repeat = True
+                repeat = False
         if new_username == adminpass:
             new_username = input(Fore.GREEN + "You are now an admin of the database, please choose a new username! \n")
             admin = True
