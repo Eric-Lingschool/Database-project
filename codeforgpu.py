@@ -2,8 +2,6 @@
 import sqlite3
 from colorama import Fore, Style, init
 
-#initialize variables
-
 
 #Initialize colorma
 init()
@@ -23,7 +21,7 @@ def connectdatabase(sql1, heading, spc1, spc2, spc3, spc4): #sql is what command
     results = cursor.fetchall()
     print(heading)
     for gpus in results:
-        print(Fore.WHITE + f"{gpus[1]:<{spc1}}{gpus[2]:<{spc2}}{gpus[3]:<{spc3}}{gpus[4]:<{spc4}}")
+        print(f"{gpus[1]:<{spc1}}{gpus[2]:<{spc2}}{gpus[3]:<{spc3}}{gpus[4]:<{spc4}}")
     print("")
     
 
@@ -120,12 +118,13 @@ def askingquestions():
 
 #Main code
 login()
-loginstate = True
 while loginstate == True:
     askingquestions()
     if access == "1":
         connectdatabase("SELECT * FROM GPU;", Fore.GREEN + "Name                Manufacturer  Clock speed id  Memory id", 20, 14, 16, 14)
+        input(Fore.WHITE + "Press Enter to continue...")
         connectdatabase("SELECT * FROM Memory;", Fore.GREEN + "Memory size  Memory bus", 13, 10, 0, 0)
+        input(Fore.WHITE + "Press Enter to continue...")
         connectdatabase("SELECT * FROM clock_speed;", Fore.GREEN + "Base clock  Memory clock", 13, 10, 0, 0)
         print(Fore.RED + "It's a bit messy but YOU asked for everything at once.")
     elif access == "2":
@@ -172,7 +171,8 @@ while loginstate == True:
         print(Fore.GREEN + "Have fun doing something else in your day!")
         break
     elif access == "$$$":
-        print("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+        print(Fore.WHITE + "https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+        print(Fore.RED + "CLICK THE LINK!(not a virus)")
     else:
         print(Fore.RED + "That is not an option!")
 
